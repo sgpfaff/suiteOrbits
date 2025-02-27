@@ -47,12 +47,12 @@ version_file = "suiteorbits/version.py"
 
 [tool.pytest.ini_options]
 testpaths = [
-  "suiteorbits",
+  "tests",
   "docs",
 ]
 doctest_plus = "enabled"
 text_file_format = "rst"
-addopts = "--doctest-rst"
+addopts = "-v"
 
 [tool.coverage.run]
 omit = [
