@@ -1,4 +1,3 @@
-from .example_mod import do_primes
 from .constants import *
 from .suite import plot
 from .suite import *
@@ -10,5 +9,5 @@ from .version import version as __version__
 #     pass
 
 
-# Then you can be explicit to control what ends up in the namespace,
-__all__ = ['do_primes']
+# # Then you can be explicit to control what ends up in the namespace,
+# __all__ = ['do_primes']
