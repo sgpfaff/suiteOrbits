@@ -1,7 +1,7 @@
 from .example_mod import do_primes
 from .constants import *
 from .util import square
-from .suite import Suite1D, Suite2D
+from .suite import *
 from .version import version as __version__
 # from importlib.metadata import version as _version, PackageNotFoundError
 # try:

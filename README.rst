@@ -1,5 +1,8 @@
-A package for making suites of orbits in galactic potentials.
+A package for making sweet simulation suites of orbits in galactic potentials.
 ------------------------------------------------------------------------------------
+
+
+
 
 License
 -------
