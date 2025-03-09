@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 from ..constants import orbitMethods, suiteValues
 from .initializers import *
+from ..plot import plot, scatter
 import galpy
 import warnings
 
@@ -134,6 +135,7 @@ class Suite():
                  integ_kwargs={},
                  init_kwargs={}, 
                  show_updates = True,
+                 auto_run = True,
                  **kwargs):
         '''
         Parameters:
@@ -158,6 +160,13 @@ class Suite():
 
         init_kwargs : dict
             Additional keyword arguments to pass to the initializer function.
+        
+        show_updates : bool
+            Print updates to the console.
+        
+        auto_run : bool
+            Automatically run the suite after initialization, using the potential used to make the particles.
+            Can bypass this feature by setting auto_run=False and integrating the suite manually with .integrate().
         '''
         if type(dims) == str:
             self.dims = dims
@@ -195,7 +204,8 @@ class Suite():
         
         if show_updates == True:
             print(f'Integrating orbits...')
-        self._run()
+        if auto_run == True:
+            self._run()
         
     def _initialize(self):
         '''
@@ -221,3 +231,43 @@ class Suite():
         '''
         self.orbits.integrate(self.ts, self.potential, **self.integ_kwargs)
         return None
+    
+    def plot(self, 
+             d1='R', 
+             d2='vR', 
+             color_by = 'E',
+             orb_inds=None, 
+             time_inds=None,
+             style='line',
+             **kwargs):
+        x = self.orbits._parse_plot_quantity(d1)[orb_inds, time_inds]
+        y = self.orbits._parse_plot_quantity(d2)[orb_inds, time_inds]
+
+        if color_by == None:
+            if style == 'line':
+                plot(x, y, **kwargs)
+            elif style == 'scatter':
+                scatter(x, y, **kwargs)
+        else:
+            if isinstance(color_by, str):
+                c = self.orbits._parse_plot_quantity(color_by)[orb_inds, time_inds]
+            elif isinstance(color_by, np.ndarray):
+                c = color_by.copy()
+            else:
+                c='k'
+
+            if style == 'line':
+                    plot(x, y, c=c, **kwargs)
+            elif style == 'scatter':
+                    scatter(x, y, c=c, **kwargs)
+        
+    
+    def plot3d(self):
+        pass
+
+    def animate(self):
+        pass
+
+    def interactive_plot(self):
+        pass
+
