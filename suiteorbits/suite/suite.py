@@ -240,8 +240,8 @@ class Suite():
              time_inds=None,
              style='line',
              **kwargs):
-        x = self.orbits._parse_plot_quantity(d1)[orb_inds, time_inds]
-        y = self.orbits._parse_plot_quantity(d2)[orb_inds, time_inds]
+        x = self.orbits._parse_plot_quantity(d1)[orb_inds][:, time_inds]
+        y = self.orbits._parse_plot_quantity(d2)[orb_inds][:, time_inds]
 
         if color_by == None:
             if style == 'line':
@@ -250,12 +250,14 @@ class Suite():
                 scatter(x, y, **kwargs)
         else:
             if isinstance(color_by, str):
-                c = self.orbits._parse_plot_quantity(color_by)[orb_inds, time_inds]
+                try:
+                    c = self.orbits._parse_plot_quantity(color_by)[orb_inds][:, time_inds]
+                except:
+                    # warnings.warn(f'Cannot color by {color_by}. Defaulting to black.')
+                    c=c
             elif isinstance(color_by, np.ndarray):
                 c = color_by.copy()
-            else:
-                c='k'
-
+            
             if style == 'line':
                     plot(x, y, c=c, **kwargs)
             elif style == 'scatter':
