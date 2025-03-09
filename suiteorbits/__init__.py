@@ -1,7 +1,7 @@
 from .constants import *
-from .suite import plot
 from .suite import *
 from .version import version as __version__
+from .plot import *
 # from importlib.metadata import version as _version, PackageNotFoundError
 # try:
 #     __version__ = _version(__name__)

@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
 import numpy as np
 from ..constants import orbitMethods, suiteValues
+from .initializers import *
+import galpy
+import warnings
 
 # class AbstractSuite(ABC):
 #     def __init__(self, dims, dim_ranges, dim_steps, **kwargs):
@@ -122,7 +125,7 @@ class Suite():
     '''
     Suite class for exploring n parameters.
     '''
-    def __init__(self, dims, dim_ranges, dim_steps, **kwargs):
+    def __init__(self, dims, dim_ranges, dim_steps, potential, init_kwargs={}, **kwargs):
         '''
         Parameters:
         ----------
@@ -134,26 +137,46 @@ class Suite():
 
         dim_steps : ndarray
             number of orbits to explore for each dimension
+
+        potential : galpy.potential.Potential
+            The galpy potential object to use for the suite.
+
+        init_kwargs : dict
+            Additional keyword arguments to pass to the initializer function.
         '''
         if type(dims) == str:
             self.dims = dims
+            # Check that dim_ranges and dim_res are the correct dimensions
+            assert dim_ranges.shape == (2,), \
+                f"'dim_ranges' must have shape (2,) but it has shape {dim_ranges.shape}"
+            assert isinstance(dim_steps, int), \
+                f"'dim_res' must be an integer but is has shape {type(dim_steps)}"
         else:
             assert all(item in suiteValues for item in dims), \
                 'All elements of dims must be a method the galpy orbit object: \n' + ', '.join(suiteValues)
             self.dims = dims
+            # Check that dim_ranges and dim_res are the correct dimensions
+            assert dim_ranges.shape == (len(dims), 2), \
+                f"'dim_ranges' must have shape ({len(dims)}, 2) but it has shape {dim_ranges.shape}"
+            assert dim_steps.shape == (len(dims),), \
+                f"'dim_res' must have shape ({len(dims)},) but it has shape {dim_steps.shape}"
         
-        # Check that dim_ranges and dim_res are the correct dimensions
-        assert dim_ranges.shape == (len(dims), 2), \
-            f"'dim_ranges' must have shape ({len(dims)}, 2) but it has shape {dim_ranges.shape}"
-        assert dim_steps.shape == (len(dims),), \
-            f"'dim_res' must have shape ({len(dims)},) but it has shape {dim_steps.shape}"
+        # ensure that the potential is a galpy potential object
+        assert isinstance(potential, galpy.potential.Potential),\
+            'potential must be a galpy potential object'
         
+        self.potential = potential
         self.dim_ranges = dim_ranges
         self.dim_res = dim_steps
-    
+        self.init_kwargs = init_kwargs
+        self.kwargs = kwargs
 
+        self.orbits = self._initialize()
+        
     def _initialize(self):
         '''
         Initialize orbits
         '''
-        pass
+        if self.dims == 'E' and 'Lz' in self.kwargs:
+            # ADD: warn user if the potential is not spherically symmetric.
+            return varyE_fixLz(self.dim_ranges, self.dim_res, self.kwargs['Lz'], self.potential, **self.init_kwargs)
