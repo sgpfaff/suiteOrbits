@@ -1,5 +1,6 @@
 'Functions to initialize the particles in the suite'
 import numpy as np
+from ..utils import eval_potential
 from galpy.orbit import Orbit
 import astropy.units as u
 
@@ -42,10 +43,11 @@ def varyE_fixLz(E_range, E_res, Lz, potential, _res=int(1e6), r_range=[0.01, 50]
     r_list = np.linspace(r_range[0], r_range[1], _res) # list of radii at which the potential is calculated
     E_list = np.linspace(E_range[0], E_range[1], E_res) # list of energies to explore
 
-    r_apo_ind_list = [np.argmin(np.abs(potential(r_list, 0) + (0.5 * Lz**2 / r_list**2) - _E)) for _E in E_list] # list of r_list indices associated with apocenter of orbit of each E and given Lz.
+    r_apo_ind_list = [np.argmin(np.abs(eval_potential(potential, r_list, 0) + (0.5 * Lz**2 / r_list**2) - _E)) for _E in E_list] # list of r_list indices associated with apocenter of orbit of each E and given Lz.
     r = r_list[r_apo_ind_list]
     vT = Lz / r
     return Orbit([[r[i], 0, vT[i], 0, 0, 0] for i in range(0, len(E_list))]) # [R,vR,vT(,z,vz,phi)]
 
 
-    
+def general():
+    '''General initialization for any provided quantities.'''

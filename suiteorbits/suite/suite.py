@@ -186,8 +186,8 @@ class Suite():
                 f"'dim_res' must have shape ({len(dims)},) but it has shape {dim_steps.shape}"
         
         # ensure that the potential is a galpy potential object
-        assert isinstance(potential, galpy.potential.Potential),\
-            'potential must be a galpy potential object'
+        assert isinstance(potential, galpy.potential.Potential) or (isinstance(potential, list) and all(isinstance(item, galpy.potential.Potential) for item in potential)),\
+            'potential must be a galpy potential or a list of galpy potentials'
         
         self.potential = potential
         self.dim_ranges = dim_ranges
