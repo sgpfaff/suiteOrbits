@@ -4,6 +4,26 @@ from ..utils import eval_potential
 from galpy.orbit import Orbit
 import astropy.units as u
 
+def _initializer(dims, dim_res, potential, **kwargs):
+    '''Find and apply the initializer based on the provided quantities.
+    
+    Parameters:
+    ----------
+    dims : dict
+        Dictionary of dimensions (keys) and their ranges (values).
+    '''
+    if 'E' in dims and 'Lz' in dims:
+            # ADD: warn user if the potential is not spherically symmetric.
+            if isinstance(dims['E'], list) and isinstance(dims['Lz'], float):
+                return varyE_fixLz(dims['E'], dim_res, dims['Lz'], potential, **kwargs)
+            elif isinstance(dims['E'], float) and isinstance(dims['Lz'], list):
+                 assert False, 'Building suites of orbits with the same energy and different angular momentum is not yet supported.'
+            elif isinstance(dims['E'], list) and isinstance(dims['Lz'], list):
+                assert False, 'Building 2D suites of orbits with varying energy and angular momentum is not yet supported.'
+            else:
+                assert False, 'E and Lz should be either lists or floats.'
+            
+    
 def varyE_fixLz(E_range, E_res, Lz, potential, _res=int(1e6), r_range=[0.01, 50], **kwargs):
     '''
     Initialize n particles with varying energy and the same angular momentum.
