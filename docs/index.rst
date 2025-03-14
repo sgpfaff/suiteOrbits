@@ -13,3 +13,7 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+Reference/API
+-------------
+.. automodapi:: suiteorbits

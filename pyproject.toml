@@ -18,7 +18,7 @@ license = { file = "licenses/LICENSE.rst" }
 authors = [
   { name = "Gabriel Pfaffman", email = "gabriel.pfaffman@mail.utoronto.ca" },
 ]
-dependencies = []
+dependencies = ["galpy", "astropy"]
 dynamic = ["version"]
 
 [project.scripts]
@@ -32,7 +32,7 @@ test = [
 ]
 docs = [
     "sphinx",
-    "sphinx-automodapi",
+    "sphinx-automodapi"
 ]
 
 [tool.setuptools]
