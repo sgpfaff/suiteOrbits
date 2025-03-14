@@ -16,7 +16,7 @@ plt.rcParams['figure.figsize'] = [10, 6]
 
 def plot(*args, fig_kwargs={}, **kwargs):
         '''
-        matplotlib plot wrapper
+        matplotlib plotting wrapper.
 
             Parameters
             ----------
@@ -77,9 +77,9 @@ def plot(*args, fig_kwargs={}, **kwargs):
 
 def scatter(*args, fig_kwargs={}, **kwargs):
         '''
-        Scatter plot of the results of the suite
+        Scatter plot of the results of the suite.
 
-        Parameters:
+        Parameters
         ----------
         *args:
             Inputs to ``pyplot.scatter``.

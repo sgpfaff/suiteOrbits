@@ -117,6 +117,34 @@ class Suite():
              time_inds=None,
              style='line',
              **kwargs):
+        """        
+        Plotting routine for orbit suite.
+        
+        Parameters
+        ----------
+        d1 : str
+            Quantity to plot on the x-axis.
+        
+        d2 : str
+            Quantity to plot on the y-axis.
+        
+        color_by : str
+            Quantity to color the orbits by. Default is 'E' for energy. The string should
+            coorespond to a method of the galpy orbit object.
+
+        orbit_inds : list
+            List of indices of the orbits to plot.
+        
+        time_inds : list
+            List of indices of the timesteps to plot.
+        
+        style : str
+            Style of the plot. Options are 'line' or 'scatter'.
+        
+        **kwargs
+            Additional keyword arguments to pass to the plotting function.
+            
+         """
         x = self.orbits._parse_plot_quantity(d1)[orb_inds][:, time_inds]
         y = self.orbits._parse_plot_quantity(d2)[orb_inds][:, time_inds]
 
@@ -141,12 +169,21 @@ class Suite():
                     scatter(x, y, c=c, **kwargs)
         
     
-    def plot3d(self):
-        pass
+    # def plot3d(self):
+    #     '''
+    #     3D plotting routine for orbit suite.
+    #     '''
+    #     pass
 
-    def animate(self):
-        pass
+    # def animate(self):
+    #     '''
+    #     Animation routine for orbit suite.
+    #     '''
+    #     pass
 
-    def interactive_plot(self):
-        pass
+    # def interactive_plot(self):
+    #     '''
+    #     Interactive plot routine for orbit suite.
+    #     '''
+    #     pass
 

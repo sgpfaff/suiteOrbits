@@ -69,5 +69,5 @@ def varyE_fixLz(E_range, E_res, Lz, potential, _res=int(1e6), r_range=[0.01, 50]
     return Orbit([[r[i], 0, vT[i], 0, 0, 0] for i in range(0, len(E_list))]) # [R,vR,vT(,z,vz,phi)]
 
 
-def general():
-    '''General initialization for any provided quantities.'''
+# def general():
+#     '''General initialization for any provided quantities.'''
