@@ -22,10 +22,11 @@ class Suite():
                  **kwargs
                  ):
         '''
-        Parameters:
+        Parameters
         ----------
         **kwargs 
             Keyword arguments to pass to the initializer function.
+            
         dim_res : float (1D) or list
             number of orbits to explore for each dimension, in order of the way they were passed in *args.
 

@@ -7,7 +7,7 @@ import astropy.units as u
 def _initializer(dims, dim_res, potential, **kwargs):
     '''Find and apply the initializer based on the provided quantities.
     
-    Parameters:
+    Parameters
     ----------
     dims : dict
         Dictionary of dimensions (keys) and their ranges (values).
@@ -28,7 +28,7 @@ def varyE_fixLz(E_range, E_res, Lz, potential, _res=int(1e6), r_range=[0.01, 50]
     '''
     Initialize n particles with varying energy and the same angular momentum.
     
-    Parameters:
+    Parameters
     ----------
     E_range : ndarray
         Range of energies to explore, in units of km^2/s^2.
@@ -40,10 +40,10 @@ def varyE_fixLz(E_range, E_res, Lz, potential, _res=int(1e6), r_range=[0.01, 50]
         The galpy potential object to use.
     _res : int
         Resolution of the radius and energy list. Default is 1e4.
-    **kwargs : dict
+    **kwargs
         Additional keyword arguments to pass to the Orbit object.
     
-    Returns:
+    Returns
     -------
     Orbit
         An Orbit object with n particles initialized at apocenter with varying energy and the same angular momentum.
