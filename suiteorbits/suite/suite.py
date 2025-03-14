@@ -104,12 +104,7 @@ class Suite():
         
     def _run(self):
         '''
-        Run the suite
-
-        Returns
-        -------
-        None
-            Updates orbit internally
+        Run the suite of orbits.
         '''
         self.orbits.integrate(self.ts, self.potential, **self.integ_kwargs)
         return None
