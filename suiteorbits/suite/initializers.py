@@ -48,12 +48,12 @@ def varyE_fixLz(E_range, E_res, Lz, potential, _res=int(1e6), r_range=[0.01, 50]
     Orbit
         An Orbit object with n particles initialized at apocenter with varying energy and the same angular momentum.
 
-    Notes:
+    Notes
     -----
     Particles are initialized at apocenter (v_r = 0) and tangential velocity in only one direction.
     Assumes a spherically symmetric potential.
 
-    Needed:
+    Needed
     ------
     * Add way to automate the resolution of the radius and energy lists.
     * Add way to automate the radius range, resolution, and scaling.

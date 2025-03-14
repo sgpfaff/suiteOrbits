@@ -22,11 +22,11 @@ class Suite():
                  **kwargs
                  ):
         '''
-        Parameters
+        Attributes
         ----------
         **kwargs 
             Keyword arguments to pass to the initializer function.
-            
+
         dim_res : float (1D) or list
             number of orbits to explore for each dimension, in order of the way they were passed in *args.
 
@@ -48,7 +48,11 @@ class Suite():
         auto_run : bool
             Automatically run the suite after initialization, using the potential used to make the particles.
             Can bypass this feature by setting auto_run=False and integrating the suite manually with .integrate().
-        
+
+        Methods
+        -------
+        plot(d1, d2, color_by=None, orb_inds=None, time_inds=None, style='line', **kwargs)
+            Plot the orbits in the suite.        
         '''
         #     assert dim_ranges.shape == (2,), \
         #         f"'dim_ranges' must have shape (2,) but it has shape {dim_ranges.shape}"
