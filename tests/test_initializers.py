@@ -30,11 +30,11 @@ def test_suite():
     import numpy as np
     pot = NFWPotential()
     n_orbits = 10
-    E_range = np.array([-0.3, -0.2])
+    E_range = [-0.3, -0.2]
     E_list = np.linspace(E_range[0], E_range[1], n_orbits)
     Lz = pot.LcE(E_list[0])
     o_direct = init.varyE_fixLz(E_range, n_orbits, Lz, pot) # initialized directly from initializer
-    suite = so.Suite('E', E_range, n_orbits, pot, Lz=Lz)
+    suite = so.Suite(E=E_range, Lz=Lz, dim_res=n_orbits, pot=pot)
 
     assert isinstance(suite.orbits, galpy.orbit.Orbit), \
         f"Suite.orbits is not a galpy Orbit object but is {type(suite.orbits)}"

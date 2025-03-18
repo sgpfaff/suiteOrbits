@@ -14,7 +14,7 @@ class Suite():
     def __init__(self,
                  dim_res=100, 
                  pot=None, 
-                 integ_time={'t_start':0, 't_end':10, 'steps':10000}, 
+                 integ_time={'t_start':0.0, 't_end':10.0, 'steps':10000}, 
                  integ_kwargs={},
                  init_kwargs={}, 
                  show_updates = True,
@@ -80,6 +80,7 @@ class Suite():
         self.integ_time = integ_time
         self.integ_kwargs = integ_kwargs
         self.init_kwargs = init_kwargs
+        print("I'm here!")
         self.ts = np.linspace(integ_time['t_start'], integ_time['t_end'], integ_time['steps']) # integration timesteps
 
         if show_updates == True:
