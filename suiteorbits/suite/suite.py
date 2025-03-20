@@ -80,7 +80,6 @@ class Suite():
         self.integ_time = integ_time
         self.integ_kwargs = integ_kwargs
         self.init_kwargs = init_kwargs
-        print("I'm here!")
         self.ts = np.linspace(integ_time['t_start'], integ_time['t_end'], integ_time['steps']) # integration timesteps
 
         if show_updates == True:
@@ -109,6 +108,59 @@ class Suite():
         '''
         self.orbits.integrate(self.ts, self.potential, **self.integ_kwargs)
         return None
+
+    def rangeValue(self, value, orb_inds = None, time_inds = None):
+        '''
+        Calculate the change in a value of the orbits.
+        Range of the value.
+
+        Parameters
+        ----------
+        value : str
+            String cooresponding to name of galpy orbit object method with 
+            which to calculate the change in energy.
+        orb_inds : list
+            List of indices of the orbits to calculate the change in energy for.
+
+        time_inds : list
+            List of indices of the timesteps to calculate the change in energy for.
+        '''
+
+        if type(orb_inds) == type(None) and type(time_inds) == type(None):
+            values = self.orbits._parse_plot_quantity(value)
+        elif type(time_inds) == type(None):
+            values = self.orbits._parse_plot_quantity(value)[orb_inds]
+        elif type(orb_inds) == type(None):
+            values = self.orbits._parse_plot_quantity(value)[:, time_inds]
+        else:
+            values = self.orbits._parse_plot_quantity(value)[orb_inds][:, time_inds]
+        return np.ptp(values, axis=-1)
+    
+    def deltaValue(self, value, time_ind = -1, orb_inds = None):
+        '''
+        Calculate the change in a value of the orbits from the initial
+        value to final value.
+        final minus initial value.
+
+        Parameters
+        ----------
+        value : str
+            String cooresponding to name of galpy orbit object method with 
+            which to calculate the change in energy.
+        orb_inds : list
+            List of indices of the orbits to calculate the change in energy for.
+        time_inds : list
+            time at which to calculate the value change.
+        '''
+
+        if type(orb_inds) == type(None):
+            initial_value = self.orbits._parse_plot_quantity(value)[:, 0]
+            final_value = self.orbits._parse_plot_quantity(value)[:, time_ind]
+        else:
+            intial_value = self.orbits._parse_plot_quantity(value)[orb_inds][:, 0]
+            final_value = self.orbits._parse_plot_quantity(value)[orb_inds][:, time_ind]
+        return final_value - initial_value
+
     
     def plot(self, 
              d1='R', 
@@ -146,10 +198,25 @@ class Suite():
             Additional keyword arguments to pass to the plotting function.
             
          """
-        x = self.orbits._parse_plot_quantity(d1)[orb_inds][:, time_inds]
-        y = self.orbits._parse_plot_quantity(d2)[orb_inds][:, time_inds]
+        if 'c' in kwargs:
+            warnings.warn('A color is provided yet color_by is not None. The color provided will be used.')
+            color_by = None
+        
+        # obtain and index the quantities to plot
+        if type(time_inds) == type(None) and type(orb_inds) == type(None):
+            x = self.orbits._parse_plot_quantity(d1)
+            y = self.orbits._parse_plot_quantity(d2)
+        elif type(time_inds) == type(None):
+            x = self.orbits._parse_plot_quantity(d1)[orb_inds]
+            y = self.orbits._parse_plot_quantity(d2)[orb_inds]
+        elif type(orb_inds) == type(None):
+            x = self.orbits._parse_plot_quantity(d1)[:, time_inds]
+            y = self.orbits._parse_plot_quantity(d2)[:, time_inds]
+        else:
+            x = self.orbits._parse_plot_quantity(d1)[orb_inds][:, time_inds]
+            y = self.orbits._parse_plot_quantity(d2)[orb_inds][:, time_inds]
 
-        if color_by == None:
+        if type(color_by) == type(None):
             if style == 'line':
                 plot(x, y, **kwargs)
             elif style == 'scatter':
@@ -157,7 +224,14 @@ class Suite():
         else:
             if isinstance(color_by, str):
                 try:
-                    c = self.orbits._parse_plot_quantity(color_by)[orb_inds][:, time_inds]
+                    if type(orb_inds) == type(None) and type(time_inds) == type(None):
+                        c = self.orbits._parse_plot_quantity(color_by)
+                    elif type(time_inds) == type(None):
+                        c = self.orbits._parse_plot_quantity(color_by)[orb_inds]
+                    elif type(orb_inds) == type(None):
+                        c = self.orbits._parse_plot_quantity(color_by)[:, time_inds]
+                    else:
+                        c = self.orbits._parse_plot_quantity(color_by)[orb_inds][:, time_inds]
                 except:
                     # warnings.warn(f'Cannot color by {color_by}. Defaulting to black.')
                     c=c
